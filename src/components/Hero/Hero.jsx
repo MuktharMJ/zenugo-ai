@@ -37,18 +37,18 @@ function Hero() {
 
         <div className="hero__stats animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
           <div className="hero__stat">
-            <span className="hero__stat-value">10K+</span>
-            <span className="hero__stat-label">Active Users</span>
+            <span className="hero__stat-value">AI</span>
+            <span className="hero__stat-label">Wellness Coach</span>
           </div>
           <div className="hero__stat-divider" />
           <div className="hero__stat">
-            <span className="hero__stat-value">98%</span>
-            <span className="hero__stat-label">Satisfaction</span>
+            <span className="hero__stat-value">Daily</span>
+            <span className="hero__stat-label">Health Tracking</span>
           </div>
           <div className="hero__stat-divider" />
           <div className="hero__stat">
             <span className="hero__stat-value">24/7</span>
-            <span className="hero__stat-label">AI Support</span>
+            <span className="hero__stat-label">Guidance</span>
           </div>
         </div>
       </div>
