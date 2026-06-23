@@ -26,9 +26,7 @@ function ChatbotPreview() {
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef(null);
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
+
 
   const sendMessage = (text) => {
     if (!text.trim()) return;
