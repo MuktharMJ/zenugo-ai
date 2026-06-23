@@ -1,8 +1,20 @@
+import Navbar from './components/Navbar/Navbar';
+import Hero from './components/Hero/Hero';
+import Features from './components/Features/Features';
+import ChatbotPreview from './components/ChatbotPreview/ChatbotPreview';
+import Footer from './components/Footer/Footer';
+import './App.css';
+
 function App() {
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h1>Zenugo AI</h1>
-      <p>Your AI-powered health & wellness companion.</p>
+    <div className="app">
+      <Navbar />
+      <main>
+        <Hero />
+        <Features />
+        <ChatbotPreview />
+      </main>
+      <Footer />
     </div>
   );
 }
