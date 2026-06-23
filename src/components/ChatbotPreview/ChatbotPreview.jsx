@@ -11,14 +11,6 @@ const SUGGESTED = [
   'Tips for better sleep',
 ];
 
-const BOT_RESPONSES = {
-  'How much water should I drink?':
-    "Based on general guidelines, you should aim for about 2-3 liters per day. I can set up personalized reminders based on your activity level and climate! 💧",
-  'Give me a morning routine':
-    "Here's an energizing morning routine:\n\n🌅 6:30 — Wake + hydrate (500ml water)\n🧘 6:45 — 10 min meditation\n🏃 7:00 — 20 min exercise\n🍳 7:30 — Balanced breakfast\n📝 8:00 — Set daily intentions\n\nWant me to customize this for you?",
-  'Tips for better sleep':
-    "Great question! Here are evidence-based tips:\n\n🌙 Keep a consistent sleep schedule\n📱 No screens 1 hour before bed\n🌡️ Keep your room cool (18-20°C)\n☕ Avoid caffeine after 2 PM\n🧘 Try a 5-min breathing exercise\n\nI can create a personalized sleep plan for you!",
-};
 
 function ChatbotPreview() {
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
@@ -28,23 +20,48 @@ function ChatbotPreview() {
 
 
 
-  const sendMessage = (text) => {
-    if (!text.trim()) return;
+  const sendMessage = async (text) => {
+  if (!text.trim()) return;
 
-    const userMsg = { role: 'user', text: text.trim() };
-    setMessages((prev) => [...prev, userMsg]);
-    setInput('');
-    setIsTyping(true);
+  const userMsg = { role: 'user', text: text.trim() };
+  setMessages((prev) => [...prev, userMsg]);
+  setInput('');
+  setIsTyping(true);
 
-    const responseText =
-      BOT_RESPONSES[text.trim()] ||
-      "That's a great question! I'd love to help you with that. In the full version, I can provide detailed, personalized answers based on your health profile. 🌟";
+  try {
+    const response = await fetch('http://localhost:5000/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: text.trim(),
+      }),
+    });
 
-    setTimeout(() => {
-      setIsTyping(false);
-      setMessages((prev) => [...prev, { role: 'bot', text: responseText }]);
-    }, 1200 + Math.random() * 800);
-  };
+    const data = await response.json();
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: 'bot',
+        text: data.reply,
+      },
+    ]);
+  } catch (error) {
+    console.error(error);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: 'bot',
+        text: 'Failed to connect to Zenugo AI backend.',
+      },
+    ]);
+  } finally {
+    setIsTyping(false);
+  }
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
