@@ -26,7 +26,13 @@ app.post("/chat", async (req, res) => {
             model: "gemini-2.5-flash"
         });
 
-        const prompt = `
+        const historyText = messages
+  .map(msg =>
+    `${msg.role === "user" ? "User" : "Zenugo"}: ${msg.text}`
+  )
+  .join("\n");
+
+const prompt = `
 You are Zenugo AI, an AI-powered health and wellness assistant.
 
 Rules:
@@ -36,12 +42,13 @@ Rules:
 - Keep answers concise and friendly.
 - Use emojis occasionally.
 - Do NOT use markdown.
-- Do NOT use **bold**, *, #, bullet markdown, or tables.
 - Use plain text only.
-- Keep answers under 150 words unless the user asks for detail.
-- If a question is medical, remind users to consult a healthcare professional.
 
-User: ${messages[messages.length - 1].text}
+Conversation so far:
+
+${historyText}
+
+Continue the conversation as Zenugo AI.
 `;
 
 const result = await model.generateContent(prompt);
