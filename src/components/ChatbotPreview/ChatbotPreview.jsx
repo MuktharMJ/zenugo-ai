@@ -35,8 +35,8 @@ function ChatbotPreview() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: text.trim(),
-      }),
+  messages: [...messages, userMsg],
+}),
     });
 
     const data = await response.json();

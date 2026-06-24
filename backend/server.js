@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 
 app.post("/chat", async (req, res) => {
     try {
-        const { message } = req.body;
+        const { messages } = req.body;
 
         const model = genAI.getGenerativeModel({
             model: "gemini-2.5-flash"
@@ -41,7 +41,7 @@ Rules:
 - Keep answers under 150 words unless the user asks for detail.
 - If a question is medical, remind users to consult a healthcare professional.
 
-User: ${message}
+User: ${messages[messages.length - 1].text}
 `;
 
 const result = await model.generateContent(prompt);
@@ -49,13 +49,13 @@ const result = await model.generateContent(prompt);
         res.json({
             reply: result.response.text()
         });
-    } catch (error) {
-        console.error(error);
+    } catch(error){
+  console.error(error);
 
-        res.status(500).json({
-            error: "Something went wrong"
-        });
-    }
+  res.json({
+    reply: "⚠️ Zenugo AI is experiencing high demand right now. Please try again in a few moments."
+  });
+}
 });
 
 app.listen(5000, () => {
