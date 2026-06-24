@@ -1,27 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
+import { Brain, Droplets, BarChart3, Target } from 'lucide-react';
 import './Features.css';
 
 const FEATURES = [
   {
-    icon: '🧠',
+    icon: <Brain aria-hidden="true" size={28} color="#6366f1" strokeWidth={1.5} />,
     title: 'AI Wellness Coach',
     description: 'Get personalized recommendations powered by advanced AI that understands your unique health profile and goals.',
     accent: '#6366f1',
   },
   {
-    icon: '💧',
+    icon: <Droplets aria-hidden="true" size={28} color="#06b6d4" strokeWidth={1.5} />,
     title: 'Water Intake Tracking',
     description: 'Smart hydration reminders and detailed tracking to keep you optimally hydrated throughout the day.',
     accent: '#06b6d4',
   },
   {
-    icon: '📊',
+    icon: <BarChart3 aria-hidden="true" size={28} color="#10b981" strokeWidth={1.5} />,
     title: 'Health Insights',
     description: 'Deep analytics and trend analysis that turn your health data into actionable, easy-to-understand insights.',
     accent: '#10b981',
   },
   {
-    icon: '🎯',
+    icon: <Target aria-hidden="true" size={28} color="#f59e0b" strokeWidth={1.5} />,
     title: 'Personalized Guidance',
     description: 'Adaptive plans that evolve with you — nutrition, exercise, sleep, and mindfulness tailored to your lifestyle.',
     accent: '#f59e0b',

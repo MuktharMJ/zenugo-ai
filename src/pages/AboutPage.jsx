@@ -1,3 +1,4 @@
+import { HeartPulse, ArrowRight } from 'lucide-react';
 import './AboutPage.css';
 
 const currentFeatures = [
@@ -41,7 +42,9 @@ function AboutPage() {
             <ul className="about-page__list">
               {currentFeatures.map((feature) => (
                 <li key={feature} className="about-page__list-item">
-                  <span className="about-page__list-icon">✦</span>
+                  <span className="about-page__list-icon">
+                    <HeartPulse aria-hidden="true" size={14} strokeWidth={2.5} />
+                  </span>
                   {feature}
                 </li>
               ))}
@@ -53,7 +56,9 @@ function AboutPage() {
             <ul className="about-page__list">
               {futureRoadmap.map((item) => (
                 <li key={item} className="about-page__list-item">
-                  <span className="about-page__list-icon">→</span>
+                  <span className="about-page__list-icon">
+                    <ArrowRight aria-hidden="true" size={14} strokeWidth={2.5} />
+                  </span>
                   {item}
                 </li>
               ))}

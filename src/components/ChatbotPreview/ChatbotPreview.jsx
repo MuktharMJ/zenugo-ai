@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { HeartPulse } from 'lucide-react';
 import './ChatbotPreview.css';
 
 const INITIAL_MESSAGES = [
@@ -101,7 +102,9 @@ function ChatbotPreview() {
             {messages.map((msg, i) => (
               <div key={i} className={`chatbot__msg chatbot__msg--${msg.role}`}>
                 {msg.role === 'bot' && (
-                  <div className="chatbot__avatar">✦</div>
+                  <div className="chatbot__avatar">
+                    <HeartPulse aria-hidden="true" size={16} strokeWidth={2.5} />
+                  </div>
                 )}
                 <div className="chatbot__bubble">
                   {msg.text.split('\n').map((line, j) => (
@@ -116,7 +119,9 @@ function ChatbotPreview() {
 
             {isTyping && (
               <div className="chatbot__msg chatbot__msg--bot">
-                <div className="chatbot__avatar">✦</div>
+                <div className="chatbot__avatar">
+                  <HeartPulse aria-hidden="true" size={16} strokeWidth={2.5} />
+                </div>
                 <div className="chatbot__bubble chatbot__bubble--typing">
                   <span className="chatbot__typing-dot" />
                   <span className="chatbot__typing-dot" />

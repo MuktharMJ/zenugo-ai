@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { HeartPulse } from 'lucide-react';
 import './Navbar.css';
 
 function Navbar() {
@@ -38,7 +39,9 @@ function Navbar() {
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner container">
         <Link to="/" className="navbar__logo" id="navbar-logo">
-          <span className="navbar__logo-icon">✦</span>
+          <span className="navbar__logo-icon">
+            <HeartPulse aria-hidden="true" size={24} strokeWidth={2.5} />
+          </span>
           <span className="navbar__logo-text">Zenugo AI</span>
         </Link>
 

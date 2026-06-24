@@ -1,3 +1,4 @@
+import { Sparkles } from 'lucide-react';
 import './Hero.css';
 
 function Hero() {
@@ -10,8 +11,8 @@ function Hero() {
       <div className="hero__grid-overlay" />
 
       <div className="hero__content container">
-        <span className="section-label animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          🧬 AI-Powered Wellness Platform
+        <span className="section-label animate-fade-in-up" style={{ animationDelay: '0.1s', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <Sparkles aria-hidden="true" size={14} /> AI-Powered Wellness Platform
         </span>
 
         <h1 className="hero__title animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
