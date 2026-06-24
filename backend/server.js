@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Message from "./models/Message.js";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -23,8 +24,15 @@ app.post("/chat", async (req, res) => {
     try {
         const { messages } = req.body;
 
+        const latestMessage = messages[messages.length - 1];
+
+await Message.create({
+  role: "user",
+  text: latestMessage.text,
+});
+
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash-lite"
+            model: "gemini-2.5-flash"
         });
 
         const historyText = messages
@@ -54,9 +62,16 @@ Continue the conversation as Zenugo AI.
 
 const result = await model.generateContent(prompt);
 
-        res.json({
-            reply: result.response.text()
-        });
+const botReply = result.response.text();
+
+await Message.create({
+  role: "bot",
+  text: botReply,
+});
+
+res.json({
+  reply: botReply
+});
     } catch(error){
   console.error(error);
 
@@ -73,7 +88,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch((err) => {
     console.error("❌ MongoDB Connection Error:", err);
   });
-  
+
 app.listen(5000, () => {
     console.log("Server running on port 5000");
 });
