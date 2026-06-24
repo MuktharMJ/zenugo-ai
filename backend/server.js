@@ -23,7 +23,7 @@ app.post("/chat", async (req, res) => {
         const { messages } = req.body;
 
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash"
+            model: "gemini-2.5-flash-lite"
         });
 
         const historyText = messages
@@ -50,7 +50,8 @@ ${historyText}
 
 Continue the conversation as Zenugo AI.
 `;
-
+console.log("PROMPT:");
+console.log(prompt);
 const result = await model.generateContent(prompt);
 
         res.json({
