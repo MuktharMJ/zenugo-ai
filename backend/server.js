@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -65,6 +66,14 @@ const result = await model.generateContent(prompt);
 }
 });
 
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("✅ MongoDB Connected");
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err);
+  });
+  
 app.listen(5000, () => {
     console.log("Server running on port 5000");
 });
