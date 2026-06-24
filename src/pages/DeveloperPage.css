@@ -1,0 +1,102 @@
+/* ===== Developer Page ===== */
+.developer-page {
+  padding: calc(var(--header-height) + var(--space-3xl)) 0 var(--space-4xl);
+  min-height: 100vh;
+}
+
+.developer-page__header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.developer-page__card {
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl) var(--space-2xl) var(--space-xl);
+}
+
+.developer-page__name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
+}
+
+.developer-page__role {
+  font-size: 0.95rem;
+  color: var(--accent-primary-light);
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+}
+
+.developer-page__bio {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--space-lg);
+}
+
+.developer-page__links {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.developer-page__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.developer-page__link:hover {
+  color: var(--accent-primary-light);
+  border-color: var(--border-color-hover);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.developer-page__divider {
+  height: 1px;
+  background: var(--border-color);
+  margin-bottom: var(--space-xl);
+}
+
+.developer-page__skills-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.developer-page__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.developer-page__skill {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-primary-light);
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+}
+
+@media (max-width: 480px) {
+  .developer-page__links {
+    flex-direction: column;
+  }
+}

@@ -104,6 +104,26 @@
   transform: translateY(-2px);
 }
 
+.footer__credit {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.footer__credit-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.footer__credit-bio {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
 @media (max-width: 768px) {
   .footer__top {
     grid-template-columns: 1fr 1fr;
