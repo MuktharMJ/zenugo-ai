@@ -50,8 +50,7 @@ ${historyText}
 
 Continue the conversation as Zenugo AI.
 `;
-console.log("PROMPT:");
-console.log(prompt);
+
 const result = await model.generateContent(prompt);
 
         res.json({
