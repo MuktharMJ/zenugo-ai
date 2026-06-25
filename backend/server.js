@@ -3,7 +3,7 @@ import Message from "./models/Message.js";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import OpenAI from "openai";
 
 dotenv.config();
 
@@ -12,10 +12,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const genAI = new GoogleGenerativeAI(
-    process.env.GEMINI_API_KEY
-);
-
+const openrouter = new OpenAI({
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL: "https://openrouter.ai/api/v1",
+});
 app.get("/", (req, res) => {
     res.send("Zenugo AI Backend Running 🚀");
 });
@@ -31,38 +31,37 @@ await Message.create({
   text: latestMessage.text,
 });
 
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash"
-        });
-
-        const historyText = messages
+   const historyText = messages
   .map(msg =>
     `${msg.role === "user" ? "User" : "Zenugo"}: ${msg.text}`
   )
   .join("\n");
 
-const prompt = `
-You are Zenugo AI, an AI-powered health and wellness assistant.
+const completion = await openrouter.chat.completions.create({
+  model: "deepseek/deepseek-v4-flash",
+  messages: [
+    {
+      role: "system",
+      content: `You are Zenugo AI, an AI-powered health and wellness assistant.
 
 Rules:
-- Never say you are Gemini, Google AI, or a large language model.
+- Never say you are ChatGPT, OpenAI, Gemini, or DeepSeek.
 - Always introduce yourself as Zenugo AI if asked.
 - Give helpful wellness, fitness, hydration, sleep, nutrition, and lifestyle advice.
 - Keep answers concise and friendly.
 - Use emojis occasionally.
 - Do NOT use markdown.
 - Use plain text only.
+- Keep answers under 150 words unless the user asks for more detail.`
+    },
+    {
+      role: "user",
+      content: historyText
+    }
+  ]
+});
 
-Conversation so far:
-
-${historyText}
-
-Continue the conversation as Zenugo AI.
-`;
-
-const result = await model.generateContent(prompt);
-
-const botReply = result.response.text();
+const botReply = completion.choices[0].message.content;
 
 await Message.create({
   role: "bot",
