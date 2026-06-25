@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import connectDB from "./config/db.js";
 import Message from "./models/Message.js";
 import express from "express";
 import cors from "cors";
@@ -80,13 +80,7 @@ res.json({
 }
 });
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("✅ MongoDB Connected");
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err);
-  });
+connectDB();
 
 app.listen(5000, () => {
     console.log("Server running on port 5000");
