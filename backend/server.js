@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
 import cookieParser from "cookie-parser";
+import authRoutes from "./routes/auth.js";
 dotenv.config();
 
 const app = express();
@@ -12,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-
+app.use("/auth", authRoutes);
 const openrouter = new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
     baseURL: "https://openrouter.ai/api/v1",
