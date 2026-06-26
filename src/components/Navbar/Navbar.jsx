@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { HeartPulse } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { HeartPulse, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, loading, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -35,6 +38,12 @@ function Navbar() {
     }
   };
 
+  const handleLogout = async () => {
+    setMobileOpen(false);
+    await logout();
+    navigate('/', { replace: true });
+  };
+
   return (
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner container">
@@ -54,26 +63,50 @@ function Navbar() {
             Features
           </Link>
           <Link
-            to="/#chatbot"
-            className="navbar__link"
-            onClick={() => handleAnchorClick('#chatbot')}
-          >
-            Chat
-          </Link>
-          <Link
             to="/about"
             className="navbar__link"
             onClick={() => setMobileOpen(false)}
           >
             About
           </Link>
-          <Link
-            to="/#hero"
-            className="btn btn-primary navbar__cta"
-            onClick={() => handleAnchorClick('#hero')}
-          >
-            Get Started
-          </Link>
+
+          {!loading && user ? (
+            <>
+              <Link
+                to="/chat"
+                className="navbar__link"
+                onClick={() => setMobileOpen(false)}
+              >
+                Chat
+              </Link>
+              <button
+                className="btn btn-primary navbar__cta"
+                onClick={handleLogout}
+                id="navbar-logout"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="navbar__link"
+                onClick={() => setMobileOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="btn btn-primary navbar__cta"
+                onClick={() => setMobileOpen(false)}
+                id="navbar-register"
+              >
+                Get Started
+              </Link>
+            </>
+          )}
         </nav>
 
         <button
