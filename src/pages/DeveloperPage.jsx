@@ -23,7 +23,7 @@ function DeveloperPage() {
                 <h2>About Me</h2>
                 <p>
                   I'm a Computer Science student and an aspiring Full-Stack Developer with a deep interest in building AI-powered web applications. 
-                  Zenugo AI started as an experiment with the Gemini API and evolved into a complete, production-ready product designed to showcase modern web architecture and UX design.
+                  Zenugo AI started as a prototype with the Gemini API and evolved into a production-ready multi-model platform via OpenRouter, designed to showcase modern web architecture and premium UX design.
                 </p>
                 <div className="dev-profile__links">
                   <a href="https://github.com/MuktharMJ" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
@@ -62,7 +62,7 @@ function DeveloperPage() {
               <div className="arch-card">
                 <div className="arch-card__icon"><Cpu size={24} /></div>
                 <h4>AI Engine</h4>
-                <p>Google Gemini 2.0 Flash API for fast, context-aware responses.</p>
+                <p>OpenRouter API supporting advanced models like OpenAI, DeepSeek, and Gemini for context-aware responses.</p>
               </div>
             </div>
           </section>

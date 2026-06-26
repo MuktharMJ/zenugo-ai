@@ -36,10 +36,10 @@ function AboutPage() {
 
         {/* Why Zenugo */}
         <section className="about-page__section animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <h2 className="about-page__section-title">Why Zenugo Exists</h2>
+          <h2 className="about-page__section-title">The Evolution of Zenugo</h2>
           <div className="about-card">
             <p className="about-card__text">
-              The health and wellness space is often fragmented. You have trackers, symptom checkers, and generic blogs. Zenugo was created to bring everything into one focused, continuous dialogue. By leveraging AI with long-term memory and contextual understanding, we eliminate the friction of starting over every time you have a health question.
+              Zenugo originally began as a prototype powered exclusively by Google's Gemini. However, as the AI landscape evolved, so did we. Today, Zenugo is a powerful multi-model platform powered by OpenRouter, seamlessly integrating leading models from OpenAI, DeepSeek, and Google. By leveraging this diverse AI ecosystem with long-term memory and contextual understanding, we eliminate the friction of starting over every time you have a health question.
             </p>
           </div>
         </section>
@@ -71,13 +71,16 @@ function AboutPage() {
           <h2 className="about-page__section-title">Technology Stack</h2>
           <div className="about-page__tech-grid">
             <div className="tech-badge">
-              <Code size={18} /> React
+              <Code size={18} /> React & Node.js
             </div>
             <div className="tech-badge">
-              <Server size={18} /> Node.js & Express
+              <Server size={18} /> Express
             </div>
             <div className="tech-badge">
-              <Zap size={18} /> Google Gemini AI
+              <Zap size={18} /> OpenRouter
+            </div>
+            <div className="tech-badge">
+              <Zap size={18} /> OpenAI, DeepSeek, Gemini
             </div>
             <div className="tech-badge">
               <Server size={18} /> MongoDB
