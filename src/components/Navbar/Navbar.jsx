@@ -38,6 +38,14 @@ function Navbar() {
     }
   };
 
+  const handleLogoClick = (e) => {
+    setMobileOpen(false);
+    if (location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const handleLogout = async () => {
     setMobileOpen(false);
     await logout();
@@ -47,7 +55,7 @@ function Navbar() {
   return (
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner container">
-        <Link to="/" className="navbar__logo" id="navbar-logo">
+        <Link to="/" className="navbar__logo" id="navbar-logo" onClick={handleLogoClick}>
           <span className="navbar__logo-icon">
             <HeartPulse aria-hidden="true" size={24} strokeWidth={2.5} />
           </span>

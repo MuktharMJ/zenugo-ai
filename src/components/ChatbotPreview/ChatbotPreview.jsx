@@ -17,11 +17,6 @@ function ChatbotPreview() {
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [input, setInput] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const chatEndRef = useRef(null);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
 
   const handleInteract = (e) => {
     e.preventDefault();
@@ -49,13 +44,7 @@ function ChatbotPreview() {
                   <HeartPulse size={32} strokeWidth={2} />
                 </div>
                 <h3>Start your wellness journey</h3>
-                <p>Create a free account to unlock:</p>
-                <ul>
-                  <li>✨ Personalized AI conversations</li>
-                  <li>📚 Unlimited chat history</li>
-                  <li>☁️ Secure cloud sync</li>
-                  <li>🎯 Wellness recommendations</li>
-                </ul>
+                <p>Create a free Zenugo account to unlock personalized AI conversations, unlimited chat history and wellness guidance.</p>
                 <div className="chatbot__modal-actions">
                   <Link to="/register" className="btn btn-primary">
                     Get Started
@@ -107,7 +96,6 @@ function ChatbotPreview() {
                 </div>
               </div>
             ))}
-            <div ref={chatEndRef} />
           </div>
 
           {/* Suggestions */}

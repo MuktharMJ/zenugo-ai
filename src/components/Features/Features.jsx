@@ -16,21 +16,21 @@ import './Features.css';
 const FEATURES = [
   {
     icon: <Brain aria-hidden="true" size={24} color="#6366f1" strokeWidth={1.5} />,
-    title: 'AI Health Assistant',
+    title: 'AI Wellness Assistant',
     description: 'Get personalized recommendations powered by advanced AI.',
     accent: '#6366f1',
     size: 'large'
   },
   {
     icon: <History aria-hidden="true" size={24} color="#06b6d4" strokeWidth={1.5} />,
-    title: 'Persistent Chat History',
+    title: 'Persistent AI Memory',
     description: 'Never lose a conversation. Pick up right where you left off across any device.',
     accent: '#06b6d4',
     size: 'large'
   },
   {
     icon: <MessageSquare aria-hidden="true" size={24} color="#10b981" strokeWidth={1.5} />,
-    title: 'Multi-Conversation',
+    title: 'Multi-Conversation History',
     description: 'Organize your health topics into separate, focused conversations.',
     accent: '#10b981',
     size: 'small'
@@ -79,7 +79,7 @@ const FEATURES = [
   },
   {
     icon: <Sparkles aria-hidden="true" size={24} color="#3b82f6" strokeWidth={1.5} />,
-    title: 'Modern AI Experience',
+    title: 'Modern AI Platform',
     description: 'A beautiful, frictionless UI designed for focus.',
     accent: '#3b82f6',
     size: 'small'
