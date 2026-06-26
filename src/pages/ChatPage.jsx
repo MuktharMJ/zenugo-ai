@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   HeartPulse,
@@ -10,19 +10,40 @@ import {
   X,
   LogOut,
   MessageSquare,
-  Sparkles,
   Menu,
   ChevronLeft,
+  Droplet,
+  Moon,
+  Apple,
+  Dumbbell,
+  Brain,
+  Activity,
+  Copy,
+  ThumbsUp,
+  ThumbsDown,
+  RefreshCw
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import * as chatAPI from '../services/chatService';
 import './ChatPage.css';
 
 const SUGGESTIONS = [
-  { icon: '💧', text: 'How much water should I drink daily?' },
-  { icon: '🌅', text: 'Give me a healthy morning routine' },
-  { icon: '😴', text: 'Tips for better sleep quality' },
-  { icon: '🏋️', text: 'Quick 15-minute workout plan' },
+  { icon: Dumbbell, text: 'Build a 15-minute home workout plan' },
+  { icon: Apple, text: 'Create a healthy, high-protein meal' },
+  { icon: Droplet, text: 'How much water should I drink daily?' },
+  { icon: Moon, text: 'Give me tips for better sleep quality' },
+  { icon: Brain, text: 'How can I reduce daily stress?' },
+  { icon: Activity, text: 'Plan a productive morning routine' },
+];
+
+const PLACEHOLDERS = [
+  'Ask about fitness...',
+  'Ask about nutrition...',
+  'Improve my sleep...',
+  'Build a workout plan...',
+  'Create a healthy meal...',
+  'Track my hydration...',
+  'Plan today\'s wellness routine...',
 ];
 
 function groupByDate(conversations) {
@@ -51,6 +72,77 @@ function groupByDate(conversations) {
   return groups;
 }
 
+const formatTime = (dateStr) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+
+// Memoized Message Component
+const ChatMessage = memo(({ msg, user }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(msg.text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const isBot = msg.role === 'bot';
+
+  return (
+    <div className={`cp__msg cp__msg--${msg.role}`}>
+      <div className="cp__msg-avatar">
+        {isBot ? (
+          <div className="cp__msg-avatar-bot">
+            <HeartPulse size={16} strokeWidth={2.5} />
+          </div>
+        ) : (
+          <div className="cp__msg-avatar-user">
+            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+          </div>
+        )}
+      </div>
+      <div className="cp__msg-content">
+        <div className="cp__msg-header">
+          <span className="cp__msg-name">{isBot ? 'Zenugo AI' : user?.name || 'You'}</span>
+          <span className="cp__msg-time">{formatTime(msg.createdAt)}</span>
+        </div>
+        <div className="cp__msg-text">
+          {msg.text.split('\n').map((line, j) => (
+            <React.Fragment key={j}>
+              {line}
+              {j < msg.text.split('\n').length - 1 && <br />}
+            </React.Fragment>
+          ))}
+        </div>
+        
+        {isBot && (
+          <div className="cp__msg-actions">
+            <button className="cp__msg-action-btn" onClick={handleCopy} aria-label="Copy">
+              {copied ? <Check size={14} className="cp__msg-action-copied" /> : <Copy size={14} />}
+            </button>
+            {/* Future proof UI placeholders */}
+            <button className="cp__msg-action-btn" aria-label="Good response">
+              <ThumbsUp size={14} />
+            </button>
+            <button className="cp__msg-action-btn" aria-label="Bad response">
+              <ThumbsDown size={14} />
+            </button>
+            <button className="cp__msg-action-btn" aria-label="Regenerate">
+              <RefreshCw size={14} />
+            </button>
+            
+            {copied && <span className="cp__toast-inline">Copied to clipboard.</span>}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+ChatMessage.displayName = 'ChatMessage';
+
 function ChatPage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -69,14 +161,38 @@ function ChatPage() {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [placeholderIdx, setPlaceholderIdx] = useState(0);
 
-  const chatEndRef = useRef(null);
-  const inputRef = useRef(null);
+  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const textareaRef = useRef(null);
   const renameInputRef = useRef(null);
+  const isAutoScrolling = useRef(true);
 
-  // Auto-scroll
+  // Rotating placeholder
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const interval = setInterval(() => {
+      setPlaceholderIdx((prev) => (prev + 1) % PLACEHOLDERS.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Smart Scrolling Logic
+  const handleScroll = () => {
+    if (!messagesContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    // If user is within 100px of bottom, auto-scroll is true
+    isAutoScrolling.current = scrollHeight - scrollTop - clientHeight < 100;
+  };
+
+  const scrollToBottom = () => {
+    if (isAutoScrolling.current && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
   }, [messages, isTyping]);
 
   // Focus rename input
@@ -103,7 +219,7 @@ function ChatPage() {
     }
   };
 
-  // Load a conversation's messages
+  // Select conversation
   const selectConversation = useCallback(async (id) => {
     if (id === activeId) return;
     setActiveId(id);
@@ -114,11 +230,12 @@ function ChatPage() {
     try {
       const res = await chatAPI.getConversation(id);
       setMessages(res.data.messages || []);
+      isAutoScrolling.current = true; // force scroll on load
     } catch (err) {
       console.error('Failed to load conversation:', err);
     } finally {
       setLoadingMessages(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => textareaRef.current?.focus(), 100);
     }
   }, [activeId]);
 
@@ -130,9 +247,24 @@ function ChatPage() {
       setActiveId(res.data._id);
       setMessages([]);
       setSidebarOpen(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => textareaRef.current?.focus(), 100);
     } catch (err) {
       console.error('Failed to create conversation:', err);
+    }
+  };
+
+  // Textarea resize logic
+  const handleInput = (e) => {
+    setInput(e.target.value);
+    const target = e.target;
+    target.style.height = 'auto';
+    target.style.height = `${Math.min(target.scrollHeight, 120)}px`;
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
     }
   };
 
@@ -141,8 +273,8 @@ function ChatPage() {
     if (!text.trim() || isTyping) return;
 
     let currentId = activeId;
+    isAutoScrolling.current = true; // force scroll when user sends msg
 
-    // Auto-create conversation if none is active
     if (!currentId) {
       try {
         const res = await chatAPI.createConversation();
@@ -159,6 +291,11 @@ function ChatPage() {
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
     setIsTyping(true);
+    
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
 
     try {
       const res = await chatAPI.sendMessage(currentId, text.trim());
@@ -171,7 +308,6 @@ function ChatPage() {
         },
       ]);
 
-      // Update the conversation title in sidebar
       if (res.data.title) {
         setConversations((prev) =>
           prev.map((c) =>
@@ -247,13 +383,11 @@ function ChatPage() {
     setRenamingId(null);
   };
 
-  // Logout
   const handleLogout = async () => {
     await logout();
     navigate('/', { replace: true });
   };
 
-  // Filter conversations by search
   const filtered = searchQuery.trim()
     ? conversations.filter((c) =>
         c.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -262,24 +396,34 @@ function ChatPage() {
 
   const grouped = groupByDate(filtered);
 
-  const formatTime = (dateStr) => {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const handleHomeClick = () => {
+    setActiveId(null);
+    setMessages([]);
+    setSidebarOpen(false);
+    setTimeout(() => textareaRef.current?.focus(), 50);
   };
 
   return (
     <section className="cp">
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div className="cp__overlay" onClick={() => setSidebarOpen(false)} />
-      )}
+      {sidebarOpen && <div className="cp__overlay" onClick={() => setSidebarOpen(false)} />}
 
       {/* ===== SIDEBAR ===== */}
       <aside className={`cp__sidebar ${sidebarOpen ? 'cp__sidebar--open' : ''}`}>
         <div className="cp__sidebar-top">
           <div className="cp__sidebar-header">
-            <div className="cp__brand">
+            <div 
+              className="cp__brand" 
+              onClick={handleHomeClick}
+              role="button"
+              tabIndex={0}
+              title="Home"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleHomeClick();
+                }
+              }}
+            >
               <HeartPulse size={20} strokeWidth={2.5} />
               <span>Zenugo AI</span>
             </div>
@@ -292,25 +436,23 @@ function ChatPage() {
             </button>
           </div>
 
-          <button className="cp__new-chat" onClick={handleNewChat} id="new-chat-btn">
-            <Plus size={18} />
+          <button className="cp__new-chat" onClick={handleNewChat}>
+            <Plus size={16} />
             <span>New Chat</span>
           </button>
 
           <div className="cp__search-wrap">
-            <Search size={15} className="cp__search-icon" />
+            <Search size={14} className="cp__search-icon" />
             <input
               className="cp__search"
               type="text"
               placeholder="Search conversations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              id="search-conversations"
             />
           </div>
         </div>
 
-        {/* Conversation list */}
         <div className="cp__convo-list">
           {loadingConvos ? (
             <div className="cp__convo-loading">
@@ -318,7 +460,6 @@ function ChatPage() {
             </div>
           ) : filtered.length === 0 ? (
             <div className="cp__convo-empty">
-              <MessageSquare size={24} />
               <span>No conversations yet</span>
             </div>
           ) : (
@@ -354,7 +495,6 @@ function ChatPage() {
                           </div>
                         ) : (
                           <>
-                            <MessageSquare size={15} className="cp__convo-icon" />
                             <span className="cp__convo-title">{c.title}</span>
                             <div className="cp__convo-actions">
                               <button
@@ -382,174 +522,145 @@ function ChatPage() {
           )}
         </div>
 
-        {/* User profile */}
         <div className="cp__sidebar-bottom">
           <div className="cp__user-card">
-            <div className="cp__user-avatar">
+            <div className="cp__user-avatar cp__user-avatar--gradient">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </div>
             <div className="cp__user-info">
               <span className="cp__user-name">{user?.name || 'User'}</span>
-              <span className="cp__user-email">{user?.email || ''}</span>
             </div>
+            <button className="cp__logout" onClick={handleLogout} aria-label="Logout">
+              <LogOut size={16} />
+            </button>
           </div>
-          <button className="cp__logout" onClick={handleLogout} id="chat-logout-btn">
-            <LogOut size={16} />
-            <span>Logout</span>
-          </button>
         </div>
       </aside>
 
       {/* ===== MAIN CHAT AREA ===== */}
       <div className="cp__main">
-        {/* Top bar */}
         <div className="cp__topbar">
-          <button
-            className="cp__menu-btn"
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open sidebar"
-          >
+          <button className="cp__menu-btn" onClick={() => setSidebarOpen(true)}>
             <Menu size={20} />
           </button>
           <span className="cp__topbar-title">
-            {activeId
-              ? conversations.find((c) => c._id === activeId)?.title || 'Chat'
-              : 'Zenugo AI'}
+            {activeId ? conversations.find((c) => c._id === activeId)?.title || 'Chat' : 'New Conversation'}
           </span>
-          <div className="cp__topbar-status">
-            <span className="cp__status-dot" />
-            <span>Online</span>
-          </div>
         </div>
 
-        {/* Messages or Welcome */}
         {!activeId && messages.length === 0 && !loadingMessages ? (
-          // Welcome screen
           <div className="cp__welcome">
             <div className="cp__welcome-content">
-              <div className="cp__welcome-icon">
-                <HeartPulse size={40} strokeWidth={2} />
-              </div>
-              <h2 className="cp__welcome-title">
-                Welcome to <span className="gradient-text">Zenugo AI</span>
+              <HeartPulse className="cp__welcome-logo" size={48} strokeWidth={2} />
+              <h2 className="cp__welcome-greeting">
+                Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user?.name ? user.name.split(' ')[0] : 'there'}.
               </h2>
-              <p className="cp__welcome-subtitle">
-                Your AI-powered health &amp; wellness companion.
-                <br />
-                Start a conversation or pick a suggestion below.
-              </p>
+              <p className="cp__welcome-quote">"Small healthy habits create big results."</p>
+              
               <div className="cp__welcome-suggestions">
-                {SUGGESTIONS.map((s) => (
-                  <button
-                    key={s.text}
-                    className="cp__welcome-suggestion"
-                    onClick={() => handleSendMessage(s.text)}
-                    disabled={isTyping}
-                  >
-                    <span className="cp__welcome-suggestion-icon">{s.icon}</span>
-                    <span>{s.text}</span>
-                  </button>
-                ))}
+                {SUGGESTIONS.map((s, idx) => {
+                  const Icon = s.icon;
+                  return (
+                    <button
+                      key={idx}
+                      className="cp__suggestion-card"
+                      onClick={() => handleSendMessage(s.text)}
+                      disabled={isTyping}
+                    >
+                      <div className="cp__suggestion-icon-wrap">
+                        <Icon size={18} />
+                      </div>
+                      <span className="cp__suggestion-text">{s.text}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
         ) : (
-          // Chat messages
-          <div className="cp__messages" id="chat-messages">
+          <div 
+            className="cp__messages" 
+            id="chat-messages" 
+            ref={messagesContainerRef}
+            onScroll={handleScroll}
+          >
             {loadingMessages ? (
               <div className="cp__messages-loading">
                 <div className="cp__spinner" />
               </div>
-            ) : messages.length === 0 && activeId ? (
-              // Empty conversation
-              <div className="cp__messages-empty">
-                <Sparkles size={32} />
-                <p>This conversation is empty. Send a message to get started!</p>
-              </div>
             ) : (
-              messages.map((msg, i) => (
-                <div key={i} className={`cp__msg cp__msg--${msg.role}`}>
-                  <div className="cp__msg-avatar">
-                    {msg.role === 'bot' ? (
+              <div className="cp__messages-inner">
+                {messages.map((msg, i) => (
+                  <ChatMessage key={i} msg={msg} user={user} />
+                ))}
+
+                {isTyping && (
+                  <div className="cp__msg cp__msg--bot cp__msg--typing">
+                    <div className="cp__msg-avatar">
                       <div className="cp__msg-avatar-bot">
                         <HeartPulse size={16} strokeWidth={2.5} />
                       </div>
-                    ) : (
-                      <div className="cp__msg-avatar-user">
-                        {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                    </div>
+                    <div className="cp__msg-content">
+                      <div className="cp__msg-header">
+                        <span className="cp__msg-name">Zenugo AI</span>
                       </div>
-                    )}
-                  </div>
-                  <div className="cp__msg-content">
-                    <div className="cp__msg-header">
-                      <span className="cp__msg-name">
-                        {msg.role === 'bot' ? 'Zenugo AI' : user?.name || 'You'}
-                      </span>
-                      <span className="cp__msg-time">{formatTime(msg.createdAt)}</span>
-                    </div>
-                    <div className="cp__msg-text">
-                      {msg.text.split('\n').map((line, j) => (
-                        <span key={j}>
-                          {line}
-                          {j < msg.text.split('\n').length - 1 && <br />}
-                        </span>
-                      ))}
+                      <div className="cp__typing-indicator">
+                        <span className="cp__typing-dot" />
+                        <span className="cp__typing-dot" />
+                        <span className="cp__typing-dot" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
-
-            {isTyping && (
-              <div className="cp__msg cp__msg--bot">
-                <div className="cp__msg-avatar">
-                  <div className="cp__msg-avatar-bot">
-                    <HeartPulse size={16} strokeWidth={2.5} />
-                  </div>
-                </div>
-                <div className="cp__msg-content">
-                  <div className="cp__msg-header">
-                    <span className="cp__msg-name">Zenugo AI</span>
-                  </div>
-                  <div className="cp__msg-typing">
-                    <span className="cp__typing-dot" />
-                    <span className="cp__typing-dot" />
-                    <span className="cp__typing-dot" />
-                  </div>
-                </div>
+                )}
+                <div ref={messagesEndRef} className="cp__scroll-anchor" />
               </div>
             )}
-            <div ref={chatEndRef} />
           </div>
         )}
 
-        {/* Input bar */}
         <div className="cp__input-area">
-          <form className="cp__input-bar" onSubmit={handleSubmit} id="chat-input-form">
-            <input
-              ref={inputRef}
-              className="cp__input"
-              type="text"
-              placeholder="Message Zenugo AI..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={isTyping}
-              id="chat-input"
-            />
+          <form className="cp__input-wrapper" onSubmit={handleSubmit}>
+            <div className="cp__input-box">
+              <textarea
+                ref={textareaRef}
+                className="cp__textarea"
+                value={input}
+                onChange={handleInput}
+                onKeyDown={handleKeyDown}
+                disabled={isTyping}
+                rows={1}
+                autoComplete="off"
+                spellCheck="false"
+                autoCorrect="off"
+                autoCapitalize="off"
+              />
+              {!input && (
+                <div className="cp__placeholder-wrapper">
+                  {PLACEHOLDERS.map((text, idx) => (
+                    <span
+                      key={idx}
+                      className={`cp__placeholder-text ${idx === placeholderIdx ? 'active' : ''}`}
+                    >
+                      {text}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               type="submit"
-              className="cp__send"
+              className="cp__send-btn"
               disabled={!input.trim() || isTyping}
-              id="chat-send"
               aria-label="Send message"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 2 11 13M22 2l-7 20-4-9-9-4z" />
               </svg>
             </button>
           </form>
           <p className="cp__disclaimer">
-            Zenugo AI provides wellness guidance — not medical advice. Always consult a professional.
+            Zenugo AI provides wellness guidance. Not medical advice.
           </p>
         </div>
       </div>
