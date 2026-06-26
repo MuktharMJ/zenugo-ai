@@ -100,35 +100,33 @@ export const sendMessage = async (req, res) => {
       text: text.trim(),
     });
 
-    // Auto-generate title from the first user message
-    const messageCount = await Message.countDocuments({
-      conversation: conversation._id,
-      role: "user",
-    });
-
-    if (messageCount === 1) {
-      const autoTitle =
-        text.trim().length > 40
-          ? text.trim().substring(0, 40) + "..."
-          : text.trim();
-      conversation.title = autoTitle;
-      await conversation.save();
-    }
-
     // Get conversation history for AI context
     const history = await Message.find({ conversation: conversation._id })
       .sort({ createdAt: 1 })
       .lean();
 
     const historyText = history
-      .map(
-        (msg) =>
-          `${msg.role === "user" ? "User" : "Zenugo"}: ${msg.text}`
-      )
+      .map((msg) => `${msg.role === "user" ? "User" : "Zenugo"}: ${msg.text}`)
       .join("\n");
 
-    // Call AI
-    const completion = await openrouter.chat.completions.create({
+    // Prepare promises for concurrent execution
+    let titlePromise = null;
+
+    const messageCount = await Message.countDocuments({
+      conversation: conversation._id,
+      role: "user",
+    });
+
+    if (messageCount === 1) {
+      const titlePrompt = `Generate a highly concise title (3-5 words, max 35 characters, Title Case) summarizing this user's first message. Do NOT use quotes, do not say "Title:" and never use generic terms like "hi", "hello" or "ok". If it's just a greeting, return "New Conversation". User message: "${text.trim()}"`;
+      titlePromise = openrouter.chat.completions.create({
+        model: "deepseek/deepseek-v4-flash",
+        messages: [{ role: "user", content: titlePrompt }],
+        max_tokens: 15,
+      });
+    }
+
+    const chatPromise = openrouter.chat.completions.create({
       model: "deepseek/deepseek-v4-flash",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
@@ -136,7 +134,33 @@ export const sendMessage = async (req, res) => {
       ],
     });
 
-    const botReply = completion.choices[0].message.content;
+    // Execute concurrently
+    const [titleCompletion, chatCompletion] = await Promise.all([
+      titlePromise,
+      chatPromise,
+    ]);
+
+    if (messageCount === 1) {
+      let autoTitle = text.trim().split(" ").slice(0, 4).join(" ");
+      if (autoTitle.length > 35) autoTitle = autoTitle.substring(0, 32) + "...";
+
+      try {
+        if (titleCompletion && titleCompletion.choices && titleCompletion.choices.length > 0) {
+          const generatedTitle = titleCompletion.choices[0].message.content.trim().replace(/^["']|["']$/g, '');
+          if (generatedTitle && generatedTitle.length <= 35) {
+            autoTitle = generatedTitle;
+          } else if (generatedTitle && generatedTitle.length > 35) {
+            autoTitle = generatedTitle.substring(0, 32) + "...";
+          }
+        }
+      } catch (err) {
+        console.error("Failed to parse title:", err);
+      }
+      conversation.title = autoTitle;
+      await conversation.save();
+    }
+
+    const botReply = chatCompletion.choices[0].message.content;
 
     // Save bot reply
     const botMessage = await Message.create({
