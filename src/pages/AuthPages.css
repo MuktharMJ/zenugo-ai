@@ -9,6 +9,18 @@
   overflow: hidden;
 }
 
+.auth-page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* Background orbs — same as Hero */
 .auth-page__orb {
   position: absolute;
@@ -40,8 +52,10 @@
 .auth-page__card {
   width: 100%;
   max-width: 420px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
   padding: var(--space-2xl);
   position: relative;
@@ -109,8 +123,6 @@
 .auth-page__label {
   font-size: 0.8rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: var(--text-secondary);
 }
 
