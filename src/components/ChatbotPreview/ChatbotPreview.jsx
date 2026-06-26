@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { HeartPulse } from 'lucide-react';
+import { HeartPulse, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import './ChatbotPreview.css';
 
 const INITIAL_MESSAGES = [
@@ -12,61 +13,19 @@ const SUGGESTED = [
   'Tips for better sleep',
 ];
 
-
 function ChatbotPreview() {
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const chatEndRef = useRef(null);
 
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-
-  const sendMessage = async (text) => {
-  if (!text.trim()) return;
-
-  const userMsg = { role: 'user', text: text.trim() };
-  setMessages((prev) => [...prev, userMsg]);
-  setInput('');
-  setIsTyping(true);
-
-  try {
-    const response = await fetch('http://localhost:5000/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-  messages: [...messages, userMsg],
-}),
-    });
-
-    const data = await response.json();
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: 'bot',
-        text: data.reply,
-      },
-    ]);
-  } catch (error) {
-    console.error(error);
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: 'bot',
-        text: 'Failed to connect to Zenugo AI backend.',
-      },
-    ]);
-  } finally {
-    setIsTyping(false);
-  }
-};
-
-  const handleSubmit = (e) => {
+  const handleInteract = (e) => {
     e.preventDefault();
-    sendMessage(input);
+    setShowModal(true);
   };
 
   return (
@@ -83,6 +42,38 @@ function ChatbotPreview() {
         </div>
 
         <div className="chatbot__window" id="chatbot-window">
+          {showModal && (
+            <div className="chatbot__modal-overlay">
+              <div className="chatbot__modal animate-scale-in">
+                <div className="chatbot__modal-icon">
+                  <HeartPulse size={32} strokeWidth={2} />
+                </div>
+                <h3>Start your wellness journey</h3>
+                <p>Create a free account to unlock:</p>
+                <ul>
+                  <li>✨ Personalized AI conversations</li>
+                  <li>📚 Unlimited chat history</li>
+                  <li>☁️ Secure cloud sync</li>
+                  <li>🎯 Wellness recommendations</li>
+                </ul>
+                <div className="chatbot__modal-actions">
+                  <Link to="/register" className="btn btn-primary">
+                    Get Started
+                  </Link>
+                  <Link to="/login" className="btn btn-secondary">
+                    Login
+                  </Link>
+                </div>
+                <button
+                  className="chatbot__modal-close"
+                  onClick={() => setShowModal(false)}
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Window chrome */}
           <div className="chatbot__chrome">
             <div className="chatbot__dots">
@@ -116,19 +107,6 @@ function ChatbotPreview() {
                 </div>
               </div>
             ))}
-
-            {isTyping && (
-              <div className="chatbot__msg chatbot__msg--bot">
-                <div className="chatbot__avatar">
-                  <HeartPulse aria-hidden="true" size={16} strokeWidth={2.5} />
-                </div>
-                <div className="chatbot__bubble chatbot__bubble--typing">
-                  <span className="chatbot__typing-dot" />
-                  <span className="chatbot__typing-dot" />
-                  <span className="chatbot__typing-dot" />
-                </div>
-              </div>
-            )}
             <div ref={chatEndRef} />
           </div>
 
@@ -138,8 +116,7 @@ function ChatbotPreview() {
               <button
                 key={s}
                 className="chatbot__suggestion"
-                onClick={() => sendMessage(s)}
-                disabled={isTyping}
+                onClick={handleInteract}
               >
                 {s}
               </button>
@@ -147,20 +124,22 @@ function ChatbotPreview() {
           </div>
 
           {/* Input */}
-          <form className="chatbot__input-bar" onSubmit={handleSubmit} id="chatbot-input-form">
+          <form className="chatbot__input-bar" onSubmit={handleInteract} id="chatbot-input-form">
             <input
               className="chatbot__input"
               type="text"
               placeholder="Ask Zenugo AI anything..."
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={isTyping}
+              onChange={(e) => {
+                setInput(e.target.value);
+                if (!showModal && e.target.value) setShowModal(true);
+              }}
+              onClick={() => setShowModal(true)}
               id="chatbot-input"
             />
             <button
               type="submit"
               className="chatbot__send"
-              disabled={!input.trim() || isTyping}
               id="chatbot-send"
               aria-label="Send message"
             >

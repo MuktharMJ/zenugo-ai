@@ -57,14 +57,14 @@ function Navbar() {
         <nav className={`navbar__nav ${mobileOpen ? 'navbar__nav--open' : ''}`} id="navbar-nav">
           <Link
             to="/#features"
-            className="navbar__link"
+            className={`navbar__link ${location.pathname === '/' && location.hash === '#features' ? 'navbar__link--active' : ''}`}
             onClick={() => handleAnchorClick('#features')}
           >
             Features
           </Link>
           <Link
             to="/about"
-            className="navbar__link"
+            className={`navbar__link ${location.pathname === '/about' ? 'navbar__link--active' : ''}`}
             onClick={() => setMobileOpen(false)}
           >
             About

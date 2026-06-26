@@ -76,8 +76,13 @@
   transition: width var(--transition-base);
 }
 
-.navbar__link:hover::after {
+.navbar__link:hover::after,
+.navbar__link--active::after {
   width: 100%;
+}
+
+.navbar__link--active {
+  color: var(--text-primary);
 }
 
 .navbar__cta {
