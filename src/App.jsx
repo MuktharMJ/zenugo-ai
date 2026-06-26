@@ -13,15 +13,17 @@ import ChatPage from './pages/ChatPage';
 import './App.css';
 
 const HIDE_FOOTER_PATHS = ['/login', '/register', '/chat'];
+const HIDE_NAVBAR_PATHS = ['/chat'];
 
 function App() {
   const location = useLocation();
   const hideFooter = HIDE_FOOTER_PATHS.includes(location.pathname);
+  const hideNavbar = HIDE_NAVBAR_PATHS.includes(location.pathname);
 
   return (
     <div className="app">
       <ScrollToTop />
-      <Navbar />
+      {!hideNavbar && <Navbar />}
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
