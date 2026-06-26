@@ -6,11 +6,16 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.js";
+import authMiddleware from "./middleware/authMiddleware.js";
+
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/auth", authRoutes);
@@ -22,8 +27,8 @@ app.get("/", (req, res) => {
     res.send("Zenugo AI Backend Running 🚀");
 });
 
-app.post("/chat", async (req, res) => {
-    try {
+app.post("/chat", authMiddleware, async (req, res) => {
+  try {
         const { messages } = req.body;
 
         const latestMessage = messages[messages.length - 1];
