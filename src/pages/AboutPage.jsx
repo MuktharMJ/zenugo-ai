@@ -1,4 +1,5 @@
-import { HeartPulse, CheckCircle2, ShieldCheck, Zap, Server, Code } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, Zap, Server, Code } from 'lucide-react';
+import logo from '../assets/logo.png';
 import './AboutPage.css';
 
 function AboutPage() {
@@ -59,7 +60,7 @@ function AboutPage() {
               <p className="about-feature__text">Our AI models are aligned to provide scientifically sound wellness guidance.</p>
             </div>
             <div className="about-feature">
-              <HeartPulse className="about-feature__icon text-pink" size={32} />
+              <img src={logo} alt="Zenugo AI Logo" className="about-feature__icon text-pink" style={{ height: '32px', width: 'auto' }} />
               <h3 className="about-feature__title">Empathetic</h3>
               <p className="about-feature__text">Designed to listen, understand, and guide without judgment.</p>
             </div>

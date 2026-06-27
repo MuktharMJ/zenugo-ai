@@ -11,9 +11,10 @@
 }
 
 .about-page__title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 800;
-  line-height: 1.2;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
   margin-bottom: var(--space-md);
   color: var(--text-primary);
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { HeartPulse, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
+import logo from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
@@ -17,21 +18,33 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Scroll to hash after navigation to home page
+  // Scroll to section after cross-page navigation
   useEffect(() => {
-    if (location.hash) {
+    if (location.state?.scrollTo) {
+      const el = document.getElementById(location.state.scrollTo);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+          navigate(location.pathname, { replace: true, state: {} });
+        }, 100);
+      }
+    } else if (location.hash) {
       const el = document.querySelector(location.hash);
       if (el) {
-        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+          navigate(location.pathname, { replace: true });
+        }, 100);
       }
     }
-  }, [location]);
+  }, [location, navigate]);
 
-  const handleAnchorClick = (hash) => {
+  const handleAnchorClick = (e, targetId) => {
     setMobileOpen(false);
-    // If already on home page, scroll directly
+    // If already on home page, scroll directly without changing URL
     if (location.pathname === '/') {
-      const el = document.querySelector(hash);
+      e.preventDefault();
+      const el = document.getElementById(targetId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
       }
@@ -56,17 +69,18 @@ function Navbar() {
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner container">
         <Link to="/" className="navbar__logo" id="navbar-logo" onClick={handleLogoClick}>
-          <span className="navbar__logo-icon">
-            <HeartPulse aria-hidden="true" size={24} strokeWidth={2.5} />
+          <span className="navbar__logo-icon" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="Zenugo AI Logo" style={{ height: '24px', width: 'auto' }} />
           </span>
           <span className="navbar__logo-text">Zenugo AI</span>
         </Link>
 
         <nav className={`navbar__nav ${mobileOpen ? 'navbar__nav--open' : ''}`} id="navbar-nav">
           <Link
-            to="/#features"
-            className={`navbar__link ${location.pathname === '/' && location.hash === '#features' ? 'navbar__link--active' : ''}`}
-            onClick={() => handleAnchorClick('#features')}
+            to="/"
+            state={{ scrollTo: 'features' }}
+            className="navbar__link"
+            onClick={(e) => handleAnchorClick(e, 'features')}
           >
             Features
           </Link>
