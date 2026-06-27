@@ -95,7 +95,7 @@
 .hero__title-top {
   font-size: clamp(3.2rem, 6vw, 5rem);
   font-weight: 800;
-  line-height: 1.0;
+  line-height: 1.1;
   letter-spacing: -0.045em;
   color: var(--text-primary);
 }
@@ -103,8 +103,9 @@
 .hero__title-bottom {
   font-size: clamp(3.2rem, 6vw, 5rem);
   font-weight: 800;
-  line-height: 1.0;
+  line-height: 1.1;
   letter-spacing: -0.045em;
+  padding-bottom: 0.1em; /* Prevent descender clipping on background-clip text */
 }
 
 /* Description */
@@ -221,14 +222,14 @@
 }
 
 .hero__float--2 {
-  bottom: 20%;
-  right: -32px;
+  bottom: 15%;
+  right: -70px;
   animation: float 8s ease-in-out infinite 1s;
 }
 
 .hero__float--3 {
-  top: 30%;
-  left: -28px;
+  top: 25%;
+  left: -80px;
   animation: float 7s ease-in-out infinite 2s;
 }
 
@@ -236,15 +237,16 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 12px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 5px 10px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(238, 240, 244, 0.6); /* Lower contrast text */
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
   border-radius: var(--radius-full);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
   white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* ===== HERO CHAT WINDOW ===== */
