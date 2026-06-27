@@ -1,143 +1,126 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   Brain,
-  MessageSquare,
-  Lock,
   History,
-  Zap,
   Shield,
-  Smartphone,
+  Zap,
   Search,
-  Target,
-  Sparkles
+  MessageSquare,
 } from 'lucide-react';
 import './Features.css';
 
 const FEATURES = [
   {
-    icon: <Brain aria-hidden="true" size={24} color="#6366f1" strokeWidth={1.5} />,
-    title: 'AI Wellness Assistant',
-    description: 'Get personalized recommendations powered by advanced AI.',
+    num: '01',
+    icon: Brain,
+    title: 'Context-aware AI',
+    headline: 'It remembers. It adapts. It understands you.',
+    description: 'Unlike generic health chatbots, Zenugo builds a deep understanding of your wellness profile. Every conversation builds on the last — your goals, preferences, and progress are never forgotten.',
     accent: '#6366f1',
-    size: 'large'
   },
   {
-    icon: <History aria-hidden="true" size={24} color="#06b6d4" strokeWidth={1.5} />,
-    title: 'Persistent AI Memory',
-    description: 'Never lose a conversation. Pick up right where you left off across any device.',
+    num: '02',
+    icon: History,
+    title: 'Persistent memory',
+    headline: 'Pick up right where you left off.',
+    description: "Your conversations are organized, searchable, and always available. Switch between devices, close your browser, come back next week — your AI companion remembers everything.",
     accent: '#06b6d4',
-    size: 'large'
   },
   {
-    icon: <MessageSquare aria-hidden="true" size={24} color="#10b981" strokeWidth={1.5} />,
-    title: 'Multi-Conversation History',
-    description: 'Organize your health topics into separate, focused conversations.',
+    num: '03',
+    icon: Shield,
+    title: 'Privacy by design',
+    headline: 'Your health data stays yours. Always.',
+    description: 'Enterprise-grade encryption, secure authentication, and a strict no-sharing policy. We built Zenugo for trust, because wellness starts with feeling safe.',
     accent: '#10b981',
-    size: 'small'
   },
-  {
-    icon: <Lock aria-hidden="true" size={24} color="#f59e0b" strokeWidth={1.5} />,
-    title: 'Secure Authentication',
-    description: 'Enterprise-grade security for your data.',
-    accent: '#f59e0b',
-    size: 'small'
-  },
-  {
-    icon: <Target aria-hidden="true" size={24} color="#ec4899" strokeWidth={1.5} />,
-    title: 'Personalized Guidance',
-    description: 'Tailored specifically to your unique wellness goals.',
-    accent: '#ec4899',
-    size: 'small'
-  },
-  {
-    icon: <Search aria-hidden="true" size={24} color="#8b5cf6" strokeWidth={1.5} />,
-    title: 'Conversation Search',
-    description: 'Find past advice instantly with fast search capabilities.',
-    accent: '#8b5cf6',
-    size: 'small'
-  },
-  {
-    icon: <Zap aria-hidden="true" size={24} color="#eab308" strokeWidth={1.5} />,
-    title: 'Fast Responses',
-    description: 'Experience ultra-fast AI inference for real-time coaching.',
-    accent: '#eab308',
-    size: 'small'
-  },
-  {
-    icon: <Shield aria-hidden="true" size={24} color="#14b8a6" strokeWidth={1.5} />,
-    title: 'Privacy First',
-    description: 'Your health data is yours. We never share it.',
-    accent: '#14b8a6',
-    size: 'small'
-  },
-  {
-    icon: <Smartphone aria-hidden="true" size={24} color="#f43f5e" strokeWidth={1.5} />,
-    title: 'Responsive Design',
-    description: 'A flawless experience on desktop, tablet, and mobile.',
-    accent: '#f43f5e',
-    size: 'small'
-  },
-  {
-    icon: <Sparkles aria-hidden="true" size={24} color="#3b82f6" strokeWidth={1.5} />,
-    title: 'Modern AI Platform',
-    description: 'A beautiful, frictionless UI designed for focus.',
-    accent: '#3b82f6',
-    size: 'small'
-  }
 ];
 
-function FeatureCard({ icon, title, description, accent, size, index }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
+const SMALL_FEATURES = [
+  { icon: Zap, title: 'Real-time responses', desc: 'Ultra-fast AI inference for instant coaching.' },
+  { icon: Search, title: 'Instant search', desc: 'Find past advice across all conversations.' },
+  { icon: MessageSquare, title: 'Multi-thread', desc: 'Organize topics into focused conversations.' },
+];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+function FeatureBlock({ num, icon: Icon, title, headline, description, accent, index }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'center center']
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [80, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
+  const isReversed = index % 2 !== 0;
 
   return (
-    <div
+    <motion.div
       ref={ref}
-      className={`feature-card feature-card--${size} ${visible ? 'feature-card--visible' : ''}`}
-      style={{ '--card-accent': accent, '--card-delay': `${(index % 4) * 0.1}s` }}
-      id={`feature-card-${index}`}
+      className={`feat-block ${isReversed ? 'feat-block--reversed' : ''}`}
+      style={{ opacity, y }}
     >
-      <div className="feature-card__icon-wrap">
-        <span className="feature-card__icon">{icon}</span>
+      <div className="feat-block__text">
+        <span className="feat-block__num" style={{ color: accent }}>{num}</span>
+        <span className="feat-block__label">{title}</span>
+        <h3 className="feat-block__headline">{headline}</h3>
+        <p className="feat-block__desc">{description}</p>
       </div>
-      <div className="feature-card__content">
-        <h3 className="feature-card__title">{title}</h3>
-        <p className="feature-card__desc">{description}</p>
+      <div className="feat-block__visual">
+        <div className="feat-block__icon-card" style={{ '--feat-accent': accent }}>
+          <div className="feat-block__icon-glow" />
+          <Icon size={32} strokeWidth={1.5} />
+        </div>
       </div>
-      <div className="feature-card__glow" />
-    </div>
+    </motion.div>
   );
 }
 
 function Features() {
   return (
-    <section className="features section" id="features">
-      <div className="container">
-        <div className="features__header">
-          <span className="section-label">Capabilities</span>
-          <h2 className="section-title">
-            Everything you need for a <span className="gradient-text">healthier life</span>
-          </h2>
-          <p className="section-subtitle">
-            Zenugo AI combines state-of-the-art language models with a modern,
-            secure platform to deliver an unparalleled wellness experience.
-          </p>
-        </div>
+    <section className="features-v2 section" id="features">
+      <div className="features-v2__line" />
 
-        <div className="features__grid">
-          {FEATURES.map((feature, i) => (
-            <FeatureCard key={feature.title} {...feature} index={i} />
+      <div className="container">
+        <motion.div
+          className="features-v2__header"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className="section-label">How It Works</span>
+          <h2 className="features-v2__title">
+            Built for people who take<br />
+            their health <span className="gradient-text">seriously.</span>
+          </h2>
+        </motion.div>
+
+        <div className="features-v2__blocks">
+          {FEATURES.map((f, i) => (
+            <FeatureBlock key={f.num} {...f} index={i} />
           ))}
         </div>
+
+        {/* Small features strip */}
+        <motion.div
+          className="features-v2__strip"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {SMALL_FEATURES.map(({ icon: Icon, title, desc }) => (
+            <div className="feat-mini" key={title}>
+              <div className="feat-mini__icon">
+                <Icon size={18} strokeWidth={1.5} />
+              </div>
+              <div>
+                <h4 className="feat-mini__title">{title}</h4>
+                <p className="feat-mini__desc">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

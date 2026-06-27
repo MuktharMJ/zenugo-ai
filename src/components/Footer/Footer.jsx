@@ -1,14 +1,16 @@
 import { Link, useLocation } from 'react-router-dom';
-import { HeartPulse, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
+import logo from '../../assets/logo.png';
 import './Footer.css';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
   const location = useLocation();
 
-  const handleAnchorClick = (hash) => {
+  const handleAnchorClick = (e, targetId) => {
     if (location.pathname === '/') {
-      const el = document.querySelector(hash);
+      e.preventDefault();
+      const el = document.getElementById(targetId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
       }
@@ -26,7 +28,7 @@ function Footer() {
           <div className="footer__brand">
             <Link to="/" className="footer__logo">
               <span className="footer__logo-icon">
-                <HeartPulse aria-hidden="true" size={24} strokeWidth={2.5} />
+                <img src={logo} alt="Zenugo AI Logo" style={{ height: '24px', width: 'auto' }} />
               </span>
               <span className="footer__logo-text">Zenugo AI</span>
             </Link>
@@ -37,8 +39,22 @@ function Footer() {
 
           <div className="footer__links-group">
             <h4 className="footer__heading">Product</h4>
-            <Link to="/#features" className="footer__link" onClick={() => handleAnchorClick('#features')}>Features</Link>
-            <Link to="/#chatbot" className="footer__link" onClick={() => handleAnchorClick('#chatbot')}>AI Chat</Link>
+            <Link 
+              to="/" 
+              state={{ scrollTo: 'features' }} 
+              className="footer__link" 
+              onClick={(e) => handleAnchorClick(e, 'features')}
+            >
+              Features
+            </Link>
+            <Link 
+              to="/" 
+              state={{ scrollTo: 'chatbot' }} 
+              className="footer__link" 
+              onClick={(e) => handleAnchorClick(e, 'chatbot')}
+            >
+              AI Chat
+            </Link>
             <Link to="/about" className="footer__link">About</Link>
             <Link to="/developer" className="footer__link">Developer</Link>
           </div>
