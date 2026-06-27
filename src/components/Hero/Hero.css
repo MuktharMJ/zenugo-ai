@@ -136,6 +136,8 @@
   .hero__stats {
     gap: var(--space-md);
     padding: var(--space-md) var(--space-lg);
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .hero__stat-value {
@@ -149,5 +151,24 @@
 
   .hero__actions .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__title {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+  
+  .hero__stats {
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+  }
+  
+  .hero__stat-divider {
+    display: none;
+  }
+  
+  .hero__stat {
+    width: 45%;
   }
 }

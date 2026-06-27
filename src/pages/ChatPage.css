@@ -1,6 +1,7 @@
 /* ===== Chat Page — Premium Layout ===== */
 .cp {
   height: 100vh;
+  height: 100dvh; /* Better mobile support */
   display: flex;
   overflow: hidden;
   background: var(--bg-primary);
@@ -381,6 +382,13 @@
   color: var(--text-secondary);
 }
 
+@media (max-width: 480px) {
+  .cp__menu-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 .cp__menu-btn:hover {
   background: var(--bg-card-hover);
   color: var(--text-primary);
@@ -745,6 +753,13 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 480px) {
+  .cp__send-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 .cp__send-btn:hover:not(:disabled) {
   opacity: 0.8;
 }
@@ -824,5 +839,26 @@
 
   .cp__msg {
     padding: var(--space-lg) var(--space-md);
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cp__msg {
+    max-width: 100%;
+    padding: var(--space-md) var(--space-sm);
+    gap: var(--space-sm);
+  }
+  
+  .cp__sidebar {
+    width: 100%;
+  }
+
+  .cp__input-area {
+    padding: 0 var(--space-sm) var(--space-md);
+  }
+  
+  .cp__input-wrapper {
+    padding: 8px;
   }
 }

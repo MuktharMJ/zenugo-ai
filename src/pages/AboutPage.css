@@ -148,3 +148,16 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .about-card,
+  .about-feature {
+    padding: var(--space-lg);
+  }
+  .about-page__title {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+  }
+  .about-page__section-title {
+    font-size: 1.4rem;
+  }
+}

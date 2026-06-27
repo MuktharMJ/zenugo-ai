@@ -111,6 +111,12 @@ img {
   padding: 0 var(--space-xl);
 }
 
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-md);
+  }
+}
+
 .section {
   padding: var(--space-4xl) 0;
 }
@@ -145,6 +151,17 @@ img {
   line-height: 1.7;
 }
 
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+  }
+  .section-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: var(--space-xl);
+  }
+}
+
 .gradient-text {
   background: var(--accent-gradient);
   -webkit-background-clip: text;
@@ -162,6 +179,7 @@ img {
   font-size: 1rem;
   border-radius: var(--radius-md);
   padding: 0.85rem 2rem;
+  min-height: 48px;
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;

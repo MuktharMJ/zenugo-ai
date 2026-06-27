@@ -179,4 +179,10 @@
   .footer__top {
     grid-template-columns: 1fr;
   }
+  
+  .footer__social,
+  .footer__back-to-top {
+    width: 44px;
+    height: 44px;
+  }
 }

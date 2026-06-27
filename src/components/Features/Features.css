@@ -149,3 +149,16 @@
     grid-row: auto;
   }
 }
+
+@media (max-width: 480px) {
+  .feature-card,
+  .feature-card--large {
+    padding: var(--space-lg);
+  }
+  .feature-card__icon-wrap,
+  .feature-card--large .feature-card__icon-wrap {
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--space-md);
+  }
+}

@@ -238,6 +238,9 @@
 /* Responsive */
 @media (max-width: 480px) {
   .auth-page__card {
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-lg) var(--space-md);
+  }
+  .auth-page__brand {
+    margin-bottom: var(--space-lg);
   }
 }
