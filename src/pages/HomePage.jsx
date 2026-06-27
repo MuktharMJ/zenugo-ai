@@ -1,6 +1,7 @@
 import Hero from '../components/Hero/Hero';
 import Features from '../components/Features/Features';
 import ChatbotPreview from '../components/ChatbotPreview/ChatbotPreview';
+import CTASection from '../components/CTASection/CTASection';
 
 function HomePage() {
   return (
@@ -8,6 +9,7 @@ function HomePage() {
       <Hero />
       <Features />
       <ChatbotPreview />
+      <CTASection />
     </>
   );
 }

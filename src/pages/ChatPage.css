@@ -421,9 +421,24 @@
   animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.cp__welcome-logo-wrap {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.2), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
 .cp__welcome-logo {
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
+  height: 30px;
+  width: auto;
 }
 
 .cp__welcome-greeting {
@@ -537,17 +552,18 @@
 
 .cp__msg-avatar-bot,
 .cp__msg-avatar-user {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .cp__msg-avatar-bot {
-  background: var(--text-primary);
-  color: var(--bg-primary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .cp__msg-avatar-user {
@@ -555,7 +571,7 @@
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .cp__msg-content {
@@ -813,8 +829,11 @@
     top: 0;
     left: 0;
     height: 100vh;
+    height: 100dvh;
+    width: 320px;
+    max-width: 85vw;
     transform: translateX(-100%);
-    z-index: 100;
+    z-index: 1000;
   }
 
   .cp__sidebar--open {
@@ -823,14 +842,19 @@
 
   .cp__sidebar-close {
     display: flex;
+    width: 44px;
+    height: 44px;
   }
 
   .cp__overlay {
     display: block;
+    z-index: 999;
   }
 
   .cp__menu-btn {
     display: flex;
+    width: 44px;
+    height: 44px;
   }
 
   .cp__welcome-greeting {
@@ -839,26 +863,37 @@
 
   .cp__msg {
     padding: var(--space-lg) var(--space-md);
-    max-width: 95%;
+    max-width: 100%;
+  }
+
+  .cp__input-area {
+    padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
   }
 }
 
 @media (max-width: 480px) {
   .cp__msg {
-    max-width: 100%;
     padding: var(--space-md) var(--space-sm);
     gap: var(--space-sm);
   }
   
-  .cp__sidebar {
-    width: 100%;
+  .cp__msg-avatar-bot,
+  .cp__msg-avatar-user {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
   }
 
+  .cp__msg-avatar-bot img {
+    height: 14px !important;
+  }
+  
   .cp__input-area {
-    padding: 0 var(--space-sm) var(--space-md);
+    padding: 0 var(--space-sm) calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
   }
   
   .cp__input-wrapper {
-    padding: 8px;
+    padding: 6px 10px;
+    border-radius: var(--radius-lg);
   }
 }

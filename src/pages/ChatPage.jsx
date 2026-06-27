@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  HeartPulse,
   Plus,
   Search,
   Trash2,
@@ -25,6 +24,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import * as chatAPI from '../services/chatService';
+import logo from '../assets/logo.png';
 import './ChatPage.css';
 
 const SUGGESTIONS = [
@@ -95,7 +95,7 @@ const ChatMessage = memo(({ msg, user }) => {
       <div className="cp__msg-avatar">
         {isBot ? (
           <div className="cp__msg-avatar-bot">
-            <HeartPulse size={16} strokeWidth={2.5} />
+            <img src={logo} alt="Zenugo AI Logo" style={{ height: '16px', width: 'auto' }} />
           </div>
         ) : (
           <div className="cp__msg-avatar-user">
@@ -424,7 +424,7 @@ function ChatPage() {
                 }
               }}
             >
-              <HeartPulse size={20} strokeWidth={2.5} />
+              <img src={logo} alt="Zenugo AI Logo" style={{ height: '20px', width: 'auto' }} />
               <span>Zenugo AI</span>
             </div>
             <button
@@ -551,7 +551,9 @@ function ChatPage() {
         {!activeId && messages.length === 0 && !loadingMessages ? (
           <div className="cp__welcome">
             <div className="cp__welcome-content">
-              <HeartPulse className="cp__welcome-logo" size={48} strokeWidth={2} />
+              <div className="cp__welcome-logo-wrap">
+                <img src={logo} alt="Zenugo AI Logo" className="cp__welcome-logo" />
+              </div>
               <h2 className="cp__welcome-greeting">
                 Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user?.name ? user.name.split(' ')[0] : 'there'}.
               </h2>
@@ -583,6 +585,11 @@ function ChatPage() {
             id="chat-messages" 
             ref={messagesContainerRef}
             onScroll={handleScroll}
+            onTouchStart={() => {
+              if (document.activeElement && document.activeElement.tagName === 'TEXTAREA') {
+                document.activeElement.blur();
+              }
+            }}
           >
             {loadingMessages ? (
               <div className="cp__messages-loading">
@@ -598,7 +605,7 @@ function ChatPage() {
                   <div className="cp__msg cp__msg--bot cp__msg--typing">
                     <div className="cp__msg-avatar">
                       <div className="cp__msg-avatar-bot">
-                        <HeartPulse size={16} strokeWidth={2.5} />
+                        <img src={logo} alt="Zenugo AI Logo" style={{ height: '16px', width: 'auto' }} />
                       </div>
                     </div>
                     <div className="cp__msg-content">
