@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { HeartPulse, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+import logo from '../assets/logo.png';
 import './AuthPages.css';
 
 function RegisterPage() {
@@ -44,7 +45,7 @@ function RegisterPage() {
         <div className="auth-page__brand">
           <Link to="/" className="auth-page__logo">
             <span className="auth-page__logo-icon">
-              <HeartPulse aria-hidden="true" size={28} strokeWidth={2.5} />
+              <img src={logo} alt="Zenugo AI Logo" style={{ height: '28px', width: 'auto' }} />
             </span>
             <span className="auth-page__logo-text">Zenugo AI</span>
           </Link>
