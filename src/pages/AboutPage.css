@@ -53,16 +53,19 @@
 /* Cards */
 .about-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-xl);
   padding: var(--space-2xl);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .about-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--border-color-hover);
+  box-shadow:
+    var(--shadow-card-hover),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border-color: rgba(99, 102, 241, 0.15);
 }
 
 .about-card__title {
@@ -90,7 +93,8 @@
 
 .about-feature:hover {
   background: var(--bg-card-hover);
-  border-color: var(--border-color-hover);
+  border-color: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 24px rgba(99, 102, 241, 0.04);
 }
 
 .about-feature__icon {
@@ -137,9 +141,10 @@
 }
 
 .tech-badge:hover {
-  border-color: var(--accent-primary-light);
-  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.08);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive */
