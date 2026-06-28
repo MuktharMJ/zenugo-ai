@@ -69,8 +69,9 @@
 
 a.contact-card:hover {
   transform: translateX(8px);
-  border-color: var(--border-color-hover);
+  border-color: rgba(99, 102, 241, 0.18);
   background: var(--bg-card-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 .contact-card__icon {
@@ -99,13 +100,15 @@ a.contact-card:hover {
 
 /* Form Card */
 .contact-form-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
+  background: rgba(14, 16, 26, 0.6);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   padding: var(--space-2xl);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-card);
+  box-shadow:
+    var(--shadow-card),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .contact-form {
@@ -142,8 +145,8 @@ a.contact-card:hover {
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08), 0 0 16px rgba(99, 102, 241, 0.04);
 }
 
 @media (max-width: 768px) {

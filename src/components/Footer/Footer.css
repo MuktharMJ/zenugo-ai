@@ -13,7 +13,7 @@
   width: 60%;
   max-width: 600px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
 }
 
 .footer__top {
@@ -136,8 +136,10 @@
 .footer__social:hover,
 .footer__back-to-top:hover {
   color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(99, 102, 241, 0.15);
+  background: rgba(255, 255, 255, 0.04);
   transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .footer__back-to-top {
