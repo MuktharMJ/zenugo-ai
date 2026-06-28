@@ -8,11 +8,15 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+client/node_modules
+server/node_modules
+client/dist
 dist
 dist-ssr
 *.local
 .env
-backend/.env
+client/.env
+server/.env
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

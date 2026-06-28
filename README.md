@@ -1,13 +1,19 @@
-# React + Vite
+# Zenugo AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Zenugo AI is a modern wellness platform separated into a client (React + Vite) and server (Node.js + Express).
 
-Currently, two official plugins are available:
+## Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Install dependencies for both client and server from the root directory:
+   ```bash
+   npm run install:all
+   ```
+2. Start the development servers concurrently:
+   ```bash
+   npm run dev
+   ```
 
-## React Compiler
+## React + Vite (Client)
 
 The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
 
