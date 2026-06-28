@@ -27,10 +27,13 @@
   background: rgba(255, 255, 255, 0.015);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-3xl);
-  backdrop-filter: blur(24px);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
   box-shadow: 
-    0 16px 48px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 32px 64px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .cta__title {
@@ -57,7 +60,10 @@
 }
 
 .cta__btn:hover {
-  box-shadow: 0 8px 40px rgba(99, 102, 241, 0.4), 0 0 80px rgba(99, 102, 241, 0.15);
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.3),
+    0 16px 48px rgba(99, 102, 241, 0.15),
+    0 0 80px rgba(99, 102, 241, 0.1);
   transform: translateY(-2px);
 }
 

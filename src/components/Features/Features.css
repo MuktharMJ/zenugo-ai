@@ -105,12 +105,13 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-2xl);
   color: var(--feat-accent);
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.3),
-    0 16px 48px rgba(0, 0, 0, 0.2);
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -118,8 +119,10 @@
   transform: translateY(-6px) scale(1.03);
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 24px 64px rgba(0, 0, 0, 0.25);
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    0 16px 48px rgba(0, 0, 0, 0.22),
+    0 0 40px rgba(99, 102, 241, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .feat-block__icon-glow {
@@ -137,9 +140,10 @@
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-xl);
   padding: var(--space-2xl);
-  background: rgba(255, 255, 255, 0.01);
+  background: rgba(255, 255, 255, 0.012);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-2xl);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .feat-mini {
