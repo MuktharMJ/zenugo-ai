@@ -30,7 +30,7 @@
 
   <br />
 
-  <img src="https://via.placeholder.com/1200x600/000000/FFFFFF?text=Zenugo+AI+Hero+Image" alt="Zenugo AI Hero Preview" width="100%" />
+  <img src="docs/images/hero.png" alt="Zenugo AI Hero Preview" width="100%" />
 
 </div>
 
@@ -75,15 +75,11 @@ In an era of information overload, finding clear, actionable health and wellness
 
 | Landing Page | Authentication |
 | :---: | :---: |
-| <img src="https://via.placeholder.com/600x400/0a0a0a/FFFFFF?text=Landing+Page" alt="Landing Page" width="100%" /> | <img src="https://via.placeholder.com/600x400/0a0a0a/FFFFFF?text=Authentication" alt="Authentication" width="100%" /> |
+| <img src="docs/images/landing.png" alt="Landing Page" width="100%" /> | <img src="docs/images/register.png" alt="Authentication" width="100%" /> |
 
-| Chat Interface | Conversation History |
-| :---: | :---: |
-| <img src="https://via.placeholder.com/600x400/0a0a0a/FFFFFF?text=Chat+Interface" alt="Chat" width="100%" /> | <img src="https://via.placeholder.com/600x400/0a0a0a/FFFFFF?text=Conversation+History" alt="History" width="100%" /> |
-
-| Mobile Experience |
+| Chat Interface |
 | :---: |
-| <img src="https://via.placeholder.com/600x400/0a0a0a/FFFFFF?text=Mobile+Experience" alt="Mobile" width="100%" /> |
+| <img src="docs/images/chat.png" alt="Chat" width="100%" /> |
 
 <br />
 
