@@ -24,6 +24,9 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const res = await loginUser(email, password);
+    if (res.data.token) {
+      localStorage.setItem('token', res.data.token);
+    }
     setUser(res.data.user);
     return res.data;
   };
@@ -35,6 +38,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     await logoutUser();
+    localStorage.removeItem('token');
     setUser(null);
   };
 
