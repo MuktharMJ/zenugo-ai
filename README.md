@@ -9,22 +9,22 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/Status-Production-success?style=for-the-badge" alt="Production Status" />
-    <img src="https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-    <img src="https://img.shields.io/badge/Express.js-5.2-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js" />
-    <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
-    <img src="https://img.shields.io/badge/AI-OpenRouter-FF5A5F?style=for-the-badge&logo=openai&logoColor=white" alt="OpenRouter AI" />
+    <code>🟢 Production</code>&nbsp;&nbsp;&nbsp;
+    <code>⚛️ React 19</code>&nbsp;&nbsp;&nbsp;
+    <code>⚡ Express 5</code>&nbsp;&nbsp;&nbsp;
+    <code>🍃 MongoDB Atlas</code>&nbsp;&nbsp;&nbsp;
+    <code>🤖 OpenRouter AI</code>
   </p>
   
   <br />
   
   <p>
     <a href="https://zenugo-ai.vercel.app" target="_blank">
-      <img src="https://img.shields.io/badge/🌐_Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+      <img src="https://img.shields.io/badge/Live_Demo-000?style=flat&logo=vercel&logoColor=white" alt="Live Demo" height="28" />
     </a>
     &nbsp;&nbsp;
     <a href="https://github.com/MuktharMJ/zenugo-ai" target="_blank">
-      <img src="https://img.shields.io/badge/📂_Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="Repository" />
+      <img src="https://img.shields.io/badge/Repository-181717?style=flat&logo=github&logoColor=white" alt="Repository" height="28" />
     </a>
   </p>
 
@@ -112,16 +112,52 @@ graph TD
 
 ## 🛠 Technology Stack
 
-| Category | Technology |
-| :--- | :--- |
-| **Frontend** | React 19, React Router DOM, Framer Motion, Lucide React |
-| **Backend** | Node.js, Express.js 5 |
-| **Database** | MongoDB Atlas, Mongoose ODM |
-| **Authentication** | JSON Web Tokens (JWT), Bcrypt, Cookie Parser |
-| **AI** | OpenRouter (DeepSeek Models) |
-| **Deployment** | Vercel (Frontend), Render (Backend) |
-| **Styling** | Vanilla CSS |
-| **Build Tool** | Vite |
+<div align="center">
+
+### Frontend
+
+<a href="https://react.dev"><img src="https://skillicons.dev/icons?i=react" width="48" height="48" alt="React" /></a>&nbsp;&nbsp;&nbsp;
+<a href="https://reactrouter.com"><img src="https://skillicons.dev/icons?i=react" width="48" height="48" alt="React Router" /></a>&nbsp;&nbsp;&nbsp;
+<a href="https://www.framer.com/motion/"><img src="https://skillicons.dev/icons?i=ai" width="48" height="48" alt="Framer Motion" /></a>&nbsp;&nbsp;&nbsp;
+
+`React 19` · `React Router DOM` · `Framer Motion` · `Lucide React`
+
+---
+
+### Backend
+
+<a href="https://nodejs.org"><img src="https://skillicons.dev/icons?i=nodejs" width="48" height="48" alt="Node.js" /></a>&nbsp;&nbsp;&nbsp;
+<a href="https://expressjs.com"><img src="https://skillicons.dev/icons?i=express" width="48" height="48" alt="Express.js" /></a>&nbsp;&nbsp;&nbsp;
+
+`Node.js` · `Express.js 5`
+
+---
+
+### Database
+
+<a href="https://www.mongodb.com"><img src="https://skillicons.dev/icons?i=mongodb" width="48" height="48" alt="MongoDB" /></a>&nbsp;&nbsp;&nbsp;
+
+`MongoDB Atlas` · `Mongoose ODM`
+
+---
+
+### Authentication & AI
+
+<img src="https://cdn.simpleicons.org/jsonwebtokens/white" width="48" height="48" alt="JWT" />&nbsp;&nbsp;&nbsp;
+<img src="https://cdn.simpleicons.org/openai/white" width="48" height="48" alt="OpenRouter" />&nbsp;&nbsp;&nbsp;
+
+`JWT` · `Bcrypt` · `Cookie Parser` · `OpenRouter (DeepSeek Models)`
+
+---
+
+### Tooling & Styling
+
+<a href="https://vite.dev"><img src="https://skillicons.dev/icons?i=vite" width="48" height="48" alt="Vite" /></a>&nbsp;&nbsp;&nbsp;
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><img src="https://skillicons.dev/icons?i=css" width="48" height="48" alt="CSS" /></a>&nbsp;&nbsp;&nbsp;
+
+`Vite` · `Vanilla CSS`
+
+</div>
 
 <br />
 
@@ -150,6 +186,19 @@ zenugo-ai/
 <br />
 
 ## 🚀 Production Deployment
+
+<div align="center">
+
+<a href="https://vercel.com"><img src="https://skillicons.dev/icons?i=vercel" width="48" height="48" alt="Vercel" /></a>&nbsp;&nbsp;&nbsp;
+<a href="https://render.com"><img src="https://cdn.simpleicons.org/render/white" width="48" height="48" alt="Render" /></a>&nbsp;&nbsp;&nbsp;
+<a href="https://www.mongodb.com/atlas"><img src="https://skillicons.dev/icons?i=mongodb" width="48" height="48" alt="MongoDB Atlas" /></a>&nbsp;&nbsp;&nbsp;
+<img src="https://cdn.simpleicons.org/openai/white" width="48" height="48" alt="OpenRouter" />&nbsp;&nbsp;&nbsp;
+
+`Vercel` · `Render` · `MongoDB Atlas` · `OpenRouter`
+
+</div>
+
+<br />
 
 Zenugo AI is deployed using a distributed architecture to ensure optimal performance and uptime:
 
@@ -202,3 +251,4 @@ Copyright © 2026 Mukthar M J.
 All Rights Reserved.
 
 Viewing the source code does not grant permission to copy, modify, redistribute, or reuse any part of this project without explicit written permission from the author.
+
