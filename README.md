@@ -5,7 +5,7 @@
   <p><strong>Your intelligent, AI-powered health and wellness companion.</strong></p>
   
   <p>
-    Zenugo AI is a modern web application designed to provide personalized, concise, and actionable wellness, fitness, hydration, sleep, nutrition, and lifestyle advice through an intuitive chat interface.
+    Zenugo AI is a modern web application designed to provide personalized, concise, and actionable wellness, fitness, hydration, sleep, nutrition, and lifestyle advice through an intuitive chat interface with chat memory for better experience.
   </p>
 
   <p>
