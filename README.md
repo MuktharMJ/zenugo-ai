@@ -6,7 +6,9 @@
 
 Zenugo AI is a modern web application designed to provide personalized, concise, and actionable wellness, fitness, hydration, sleep, nutrition, and lifestyle advice through an intuitive chat interface with chat memory for better experience.
 
-[**Live Demo →**](https://zenugo-ai.vercel.app) &nbsp;&nbsp;·&nbsp;&nbsp; [**Repository**](https://github.com/MuktharMJ/zenugo-ai)
+[**Live Demo →**](https://zenugo-ai.vercel.app)
+
+<a href="https://vercel.com"><img src="https://img.shields.io/badge/Deployed%20on-Vercel-000?style=flat&logo=vercel&logoColor=white" alt="Deployed on Vercel" height="24" /></a>
 
 <br />
 
