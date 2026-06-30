@@ -8,8 +8,6 @@ Zenugo AI is a modern web application designed to provide personalized, concise,
 
 [**Live Demo →**](https://zenugo-ai.vercel.app)
 
-<a href="https://vercel.com"><img src="https://img.shields.io/badge/Deployed%20on-Vercel-000?style=flat&logo=vercel&logoColor=white" alt="Deployed on Vercel" height="24" /></a>
-
 <br />
 
 <img src="docs/images/hero.png" alt="Zenugo AI Hero Preview" width="100%" />
