@@ -1,6 +1,6 @@
 <div align="center">
   
-  <h1>✨ Zenugo AI</h1>
+  <h1>Zenugo AI</h1>
   
   <p><strong>Your intelligent, AI-powered health and wellness companion.</strong></p>
   
