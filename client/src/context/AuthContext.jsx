@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getMe, loginUser, registerUser, logoutUser } from '../services/authService';
+import { fetchUserProfile, loginUser, registerUser, logoutUser } from '../services/authService';
 
 const AuthContext = createContext(null);
 
@@ -11,8 +11,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await getMe();
-        setUser(res.data);
+        const userData = await fetchUserProfile();
+        setUser(userData);
       } catch {
         setUser(null);
       } finally {

@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.2",
     "openai": "^6.45.0",
+    "pg": "^8.13.1",
     "zenugo-ai-root": "file:.."
   }
 }

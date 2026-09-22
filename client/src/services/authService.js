@@ -22,7 +22,25 @@ export const loginUser = (email, password) =>
 export const getMe = () =>
   API.get('/auth/me');
 
+/**
+ * CONCEPT: JavaScript — async/await
+ * Uses actual `async` and `await` keywords with proper try/catch error handling.
+ * - `async` specifies that this function returns a Promise.
+ * - `await` pauses execution until the API request resolves.
+ * - try/catch handles network/HTTP errors.
+ */
+export async function fetchUserProfile() {
+  try {
+    const response = await getMe();
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user profile:", error);
+    throw error;
+  }
+}
+
 export const logoutUser = () =>
   API.post('/auth/logout');
 
 export default API;
+
