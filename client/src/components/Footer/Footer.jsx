@@ -7,14 +7,22 @@ function Footer() {
   const currentYear = new Date().getFullYear();
   const location = useLocation();
 
-  const handleAnchorClick = (e, targetId) => {
-    if (location.pathname === '/') {
-      e.preventDefault();
-      const el = document.getElementById(targetId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+  // CLOSURE PATTERN:
+  // createSmoothScrollHandler is a higher-order factory function.
+  // The returned inner function forms a closure that retains access to
+  // `targetId` and `location` from its lexical environment even when
+  // invoked asynchronously later by the DOM click event.
+  const createSmoothScrollHandler = (targetId) => {
+    return (e) => {
+      // Inner function captures targetId from outer function's scope
+      if (location.pathname === '/') {
+        e.preventDefault();
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-    }
+    };
   };
 
   const scrollToTop = () => {
@@ -43,7 +51,7 @@ function Footer() {
               to="/" 
               state={{ scrollTo: 'features' }} 
               className="footer__link" 
-              onClick={(e) => handleAnchorClick(e, 'features')}
+              onClick={createSmoothScrollHandler('features')}
             >
               Features
             </Link>
@@ -51,7 +59,7 @@ function Footer() {
               to="/" 
               state={{ scrollTo: 'chatbot' }} 
               className="footer__link" 
-              onClick={(e) => handleAnchorClick(e, 'chatbot')}
+              onClick={createSmoothScrollHandler('chatbot')}
             >
               AI Chat
             </Link>

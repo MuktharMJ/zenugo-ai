@@ -61,8 +61,13 @@ function Navbar() {
 
   const handleLogout = async () => {
     setMobileOpen(false);
-    await logout();
-    navigate('/', { replace: true });
+    try {
+      await logout();
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error('Logout failed:', error);
+      navigate('/', { replace: true });
+    }
   };
 
   return (

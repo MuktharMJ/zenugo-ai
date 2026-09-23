@@ -81,3 +81,40 @@ export function loadPreferencePromisified(key) {
     });
   });
 }
+
+// ──────────────────────────────────────────────
+// PROMISE CHAINING & ERROR PROPAGATION (.then / .catch)
+// ──────────────────────────────────────────────
+// Demonstrates sequential async processing with .then() and centralized
+// error catching with .catch(). If savePreferencePromise rejects or any
+// .then step throws, the error propagates down to the .catch block.
+
+export function updatePreferenceWithChain(key, value) {
+  return savePreferencePromise(key, value)
+    .then((savedResult) => {
+      // Transformation step in the promise chain
+      return {
+        success: true,
+        data: savedResult,
+        updatedAt: new Date().toISOString()
+      };
+    })
+    .catch((error) => {
+      // Error propagation: catches rejection from savePreferencePromise or errors in .then
+      console.error(`[asyncPatterns] Preference update failed for key "${key}":`, error.message);
+      // Re-throw with enriched context for the caller
+      throw new Error(`Failed to update preference [${key}]: ${error.message}`);
+    });
+}
+
+export function loadPreferenceWithFallback(key, fallbackValue = null) {
+  return loadPreferencePromisified(key)
+    .then((value) => {
+      return value !== null ? value : fallbackValue;
+    })
+    .catch((error) => {
+      // Error handling with graceful fallback recovery
+      console.warn(`[asyncPatterns] Failed to load "${key}", using fallback:`, error.message);
+      return fallbackValue;
+    });
+}

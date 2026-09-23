@@ -6,62 +6,112 @@ This document provides exact file locations, code functions/queries, and concise
 
 ## 1. JavaScript — async/await
 
-- **File Path**: `client/src/services/authService.js` (used in `client/src/context/AuthContext.jsx`)
-- **Implementation**: `fetchUserProfile()`
+- **File Path**: `client/src/components/Navbar/Navbar.jsx` (and `client/src/services/authService.js`)
+- **Implementation**: `handleLogout()` in `Navbar.jsx` & `fetchUserProfile()` in `authService.js`
 
-### Code Snippet
+### Code Snippet (`Navbar.jsx`)
 ```javascript
-export async function fetchUserProfile() {
+const handleLogout = async () => {
+  setMobileOpen(false);
   try {
-    const response = await getMe();
-    return response.data;
+    await logout();
+    navigate('/', { replace: true });
   } catch (error) {
-    console.error("Failed to fetch user profile:", error);
-    throw error;
+    console.error('Logout failed:', error);
+    navigate('/', { replace: true });
   }
-}
+};
 ```
 
 ### Viva Explanation
-> "This function uses `async/await` to handle asynchronous HTTP calls cleanly without callback nesting. Declaring a function with `async` ensures it returns a Promise, while the `await` keyword pauses execution until the inner Promise resolves. The surrounding `try/catch` block captures network or server errors synchronously within asynchronous flow."
+> "This function uses `async/await` with an explicit `try/catch` block to handle asynchronous user logout cleanly. Marking the handler `async` allows using `await` to pause execution until the `logout()` Promise resolves or rejects. The `try/catch` block guarantees robust error handling so any network failure during logout is caught, logged, and gracefully handled with fallback navigation."
 
 ---
 
 ## 2. JavaScript — Promises vs Callbacks
 
 - **File Path**: `client/src/utils/asyncPatterns.js`
-- **Implementation**: `loadPreferenceCallback()`, `savePreferencePromise()`, `loadPreferencePromisified()`
+- **Implementation**: `loadPreferenceCallback()`, `savePreferencePromise()`, `updatePreferenceWithChain()`, `loadPreferenceWithFallback()`
 
-### Code Snippet
+### Code Snippet (`asyncPatterns.js`)
 ```javascript
-// Callback-based pattern
-export function loadPreferenceCallback(key, callback) {
-  setTimeout(() => {
-    try {
-      const value = localStorage.getItem(`zenugo_pref_${key}`);
-      callback(null, value);
-    } catch (error) {
-      callback(error, null);
-    }
-  }, 100);
-}
-
-// Promise-based pattern
-export function savePreferencePromise(key, value) {
-  return new Promise((resolve, reject) => {
-    if (!key) return reject(new Error("Preference key is required"));
-    try {
-      localStorage.setItem(`zenugo_pref_${key}`, value);
-      resolve({ key, value });
-    } catch (error) {
-      reject(error);
-    }
-  });
+// Promise chaining with .then() and .catch() demonstrating error propagation
+export function updatePreferenceWithChain(key, value) {
+  return savePreferencePromise(key, value)
+    .then((savedResult) => {
+      return {
+        success: true,
+        data: savedResult,
+        updatedAt: new Date().toISOString()
+      };
+    })
+    .catch((error) => {
+      // Error propagation: catches errors thrown from savePreferencePromise or .then
+      console.error(`[asyncPatterns] Preference update failed for key "${key}":`, error.message);
+      throw new Error(`Failed to update preference [${key}]: ${error.message}`);
+    });
 }
 ```
 
 ### Viva Explanation
-> "Callbacks are functions passed as arguments that execute once an async operation finishes, following Node.js `(error, result)` convention. Promises represent the eventual completion or failure of an asynchronous operation using explicit `resolve()` and `reject()` handlers. Unlike callbacks, Promises avoid callback hell, support chaining (`.then()`), and serve as the foundation for `async/await`."
+> "Callbacks pass a function `(error, result)` that is executed after asynchronous completion, which can lead to callback hell when nested. Promises represent future asynchronous values that can be cleanly chained using `.then()` for sequential transformations and `.catch()` for centralized error propagation. Any rejection upstream automatically cascades down the chain to the `.catch()` handler."
+
+---
+
+## 2b. JavaScript — Closures
+
+- **File Path**: `client/src/components/Footer/Footer.jsx`
+- **Implementation**: `createSmoothScrollHandler(targetId)`
+
+### Code Snippet (`Footer.jsx`)
+```javascript
+const createSmoothScrollHandler = (targetId) => {
+  return (e) => {
+    // Inner function captures targetId and location from outer lexical scope
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+};
+```
+
+### Viva Explanation
+> "A closure is formed when an inner function retains access to variables in its outer lexical scope even after the outer function has finished executing. Here, `createSmoothScrollHandler` is a factory function that takes `targetId` and returns a click event handler. The returned function forms a closure preserving `targetId` in memory, ensuring that when the user clicks 'Features' or 'AI Chat', the correct element ID is accessed without stale state or global variables."
+
+---
+
+## 2c. Client-side Routing — Protected Routes
+
+- **File Path**: `client/src/App.jsx` & `client/src/components/ProtectedRoute/ProtectedRoute.jsx`
+- **Implementation**: `<ProtectedRoute><ContactPage /></ProtectedRoute>` & `<ProtectedRoute><ChatPage /></ProtectedRoute>`
+
+### Code Snippet
+```jsx
+// App.jsx — Route Configuration
+<Route
+  path="/contact"
+  element={
+    <ProtectedRoute>
+      <ContactPage />
+    </ProtectedRoute>
+  }
+/>
+
+// ProtectedRoute.jsx — Auth Guard
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="auth-loading"><div className="auth-loading__spinner" /></div>;
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+```
+
+### Viva Explanation
+> "Client-side route protection guards private application routes by wrapping protected page components in a higher-order `<ProtectedRoute>` component in the React Router configuration. `ProtectedRoute` consumes authentication state from `AuthContext` via `useAuth()`. If no authenticated user exists (`!user`), it redirects unauthenticated users to `/login` via `<Navigate replace />`, preventing unauthorized access while preserving smooth single-page application navigation."
 
 ---
 
